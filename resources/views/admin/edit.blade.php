@@ -10,5 +10,6 @@
                     <button type="submit" class="bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl">Save</button>
                 </div>
             </form>
+            
     </div>
     @endsection
