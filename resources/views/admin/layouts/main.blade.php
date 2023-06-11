@@ -18,18 +18,17 @@
 <body>
 
     <div class="container-fluid">
-        <div class="flex h-screen" x-data="{ isSidebarExpanded: true }">
+        <div class="flex h-screen overflow-auto bg-gray-800" x-data="{ isSidebarExpanded: true }">
+        
             @include("admin.layouts.sidebar")
+
             <div class="w-full bg-gray-100" >
 
                 <nav class="bg-white">
-                    <div class="container-fluid mx-auto flex items-center">
+                    <div class="container-fluid flex items-center">
                         <div class="px-7 my-3 cursor-pointer" @click="isSidebarExpanded = !isSidebarExpanded" >
                             <i class="fas fa-bars text-xl"></i>
                         </div>  
-                        <div class="ml-12 space-x-5 hidden lg:flex">
-                            
-                        </div>
                         <div class="ml-auto relative">
                                 <div id="dropdown" class="mr-7 p-1 cursor-pointer">
                                     <i class="fas fa-user"></i>

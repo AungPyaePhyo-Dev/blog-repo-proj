@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $service;
+    public function __construct(CategoryService $service) {
+        $this->service =  $service;
+    }
+
+
     public function index()
     {
-        $categories = Category::get();
+        $categories = $this->service->getAllCategories();
         return view('admin.category.index', compact('categories'));
     }
 
@@ -37,7 +39,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-       Category::create($request->validated());
+       $this->service->insertData($request->validated());
        return redirect()->route('category.index')->with('message', 'Successfully Created New Category');
     }
 
@@ -73,7 +75,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->validated());
+        $this->service->updateData($request->validated(), $category->id);
         return redirect()->route('category.index')->with('message', 'Successfully Updated Category');
     }
 

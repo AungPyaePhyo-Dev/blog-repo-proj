@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -25,6 +26,10 @@ Route::get('/',  [HomeController::class, 'index'])->name('home');
 Route::get('/about',  [HomeController::class, 'about'])->name('about');
 Route::get('/contact',  [HomeController::class, 'contact'])->name('contact');
 Route::post('/search', [HomeController::class, 'search'])->name('search');
+Route::get('/post/{slug}', [HomeController::class, 'postView'])->name('post.view');
+Route::post('/contact', [ContactController::class, 'contactStore'])->name('contact');
+
+Route::get('/post_by_category/{id}', [HomeController::class, 'postByCategory'])->name('post_by_category');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -38,6 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('category', CategoryController::class);
 
     Route::resource('post', PostController::class);
+
+    Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('contact/{id}', [ContactController::class, 'show'])->name('contact.show');
+    Route::delete('contact/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
 });
 
 

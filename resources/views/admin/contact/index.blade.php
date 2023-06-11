@@ -29,27 +29,25 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Slug</th>
+                    <th>Name</th>
+                    <th>Email</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @php $i=1; @endphp
-                @foreach($posts as $post)
+                @foreach($contacts as $contact)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>{{ $post->title }}</td>
-                        <td>{{ $post->category->name }}</td>
-                        <td>{{ $post->slug }}</td>
+                        <td>{{ $contact->name }}</td>
+                        <td>{{ $contact->email}}</td>
                         <td> 
                             <div class="flex">
-                                <a href="{{ route('post.edit', $post->id) }}" class="mr-4 text-xl text-teal-500"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('category.destroy', $post->id) }}" method="post">
+                                <a href="{{ route('contact.show', $contact->id) }}" class="mr-4 text-xl text-teal-500"><i class="fas fa-eye"></i></a>
+                                <form action="{{ route('contact.destroy', $contact->id) }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="text-xl text-red-500" data-id={{ $post->id }}><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="text-xl text-red-500" data-id={{ $contact->id }}><i class="fas fa-trash"></i></button>
                                 </form>
                             </div>
                         </td>

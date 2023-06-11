@@ -1,5 +1,5 @@
-<div  class="h-screen bg-slate-700" :class="isSidebarExpanded ? 'w-80' : 'w-20'">
-    <div class="h-full bg-gray-800 shadow-md z-50">
+<div :class="isSidebarExpanded ? 'w-80' : 'w-20'">
+    <div class="">
         <a href="#" class="flex items-center py-3 px-4 text-white border-l-4 border-transparent">
             <i class="fa-solid fa-microchip"></i>
             <span class="ml-2  font-medium duration-300 ease-in-out" :class="isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'">Laravel Tuto</span>
@@ -25,6 +25,13 @@
             ">
                 <i class="fa-solid fa-pen"></i>
                 <span class="ml-2  font-medium duration-300 ease-in-out" :class="isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'">Post</span>
+            </a>
+
+            <a href="{{ route('contact.index') }}" class="flex items-center py-3 px-4 text-white  hover:bg-gray-900 transition
+                {{ Request::segment(1) == "contact" ? 'bg-gray-900' : '' }}
+            ">
+                <i class="fa-solid fa-pen"></i>
+                <span class="ml-2  font-medium duration-300 ease-in-out" :class="isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'">Contact</span>
             </a>
         </div>
     </div>

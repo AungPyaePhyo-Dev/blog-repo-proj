@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 @section('content')
-<div class="container mx-auto px-4 sm:px-8">
+<div class="container-fluid px-4 sm:px-8">
     <h3 class="text-xl font-semibold mb-5">Create Category</h3>
     <form action="{{ route('category.store') }}" method="post">
         @csrf

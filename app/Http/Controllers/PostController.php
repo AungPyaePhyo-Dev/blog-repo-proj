@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Services\CategoryService;
+use App\Services\PostService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $service;
+    protected $categoryService;
+
+
+    public function __construct(PostService $service, CategoryService $categoryService) {
+        $this->service = $service;
+        $this->categoryService = $categoryService;
+    }
     public function index()
     {
         $posts = Post::get();
@@ -36,9 +43,21 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $image = $request->file('image');
+        if(isset($validated['image'])) {
+            $image = \Storage::disk('public')->putFile('blog_image', $image);
+            $validated['image'] = $image;
+        }
+
+        $this->service->insertData($validated);
+
+        return redirect()->route('post.index')->with('message', 'Successfully created post');
+
+        
     }
 
     /**
@@ -60,7 +79,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.post.edit');
+        $categories = $this->categoryService->getAllCategories();
+        return view('admin.post.edit', compact('post', 'categories'));
     }
 
     /**
@@ -72,7 +92,27 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('posts')->ignore($post->id)],
+            'description' => 'required|max:10000',
+            'image' => 'nullable|mimes:png,jpg,jpeg',
+            "post_date" => "nullable"
+        ]);
+
+        $image = $request->file('image');
+        if(isset($validated['image'])) {
+            if(\Storage::exists('public/'. $post->image)) {
+                \Storage::delete('public/'. $post->image);
+            }
+            $image = \Storage::disk('public')->putFile('blog_image', $image);
+            $validated['image'] = $image;
+        }
+
+        $this->service->updateDate($validated, $post->id);
+
+        return redirect()->route('post.index')->with('message', 'Successfully updated post');
     }
 
     /**

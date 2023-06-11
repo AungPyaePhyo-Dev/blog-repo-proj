@@ -1,7 +1,7 @@
     @extends('admin.layouts.main')
     @section('content')
         <div class="container mx-auto px-4">
-            <h3 class="text-xl font-semibold mb-5">Create Category</h3>
+            <h3 class="text-xl font-semibold mb-5">Update Category</h3>
             <form action="{{ route('category.update', $category->id) }}" method="post">
                 @csrf
                 @method('PUT')
